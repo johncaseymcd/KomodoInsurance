@@ -1,0 +1,10 @@
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoConsole\bin\Debug\KomodoConsole.exe.config
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoConsole\bin\Debug\KomodoConsole.exe
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoConsole\bin\Debug\KomodoConsole.pdb
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoConsole\bin\Debug\KomodoRepository.dll
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoConsole\bin\Debug\KomodoRepository.pdb
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoConsole\obj\Debug\KomodoConsole.csprojAssemblyReference.cache
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoConsole\obj\Debug\KomodoConsole.csproj.CoreCompileInputs.cache
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoConsole\obj\Debug\KomodoConsole.csproj.CopyComplete
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoConsole\obj\Debug\KomodoConsole.exe
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoConsole\obj\Debug\KomodoConsole.pdb

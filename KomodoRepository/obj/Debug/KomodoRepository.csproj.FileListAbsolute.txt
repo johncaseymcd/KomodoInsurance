@@ -1,0 +1,6 @@
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoRepository\bin\Debug\KomodoRepository.dll
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoRepository\bin\Debug\KomodoRepository.pdb
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoRepository\obj\Debug\KomodoRepository.csprojAssemblyReference.cache
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoRepository\obj\Debug\KomodoRepository.csproj.CoreCompileInputs.cache
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoRepository\obj\Debug\KomodoRepository.dll
+C:\Users\johnc\OneDrive\Documents\ElevenFiftyProjects\GoldBadge\KomodoInsurance\KomodoRepository\KomodoRepository\obj\Debug\KomodoRepository.pdb

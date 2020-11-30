@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KomodoRepository
 {
-    class DeveloperRepo
+    public class DeveloperRepo
     {
         // Create a field to store all the developers at the company
         private List<Developer> _listOfDevelopers = new List<Developer>();
@@ -69,7 +69,7 @@ namespace KomodoRepository
         }
 
         // Helper method to find employees by ID number
-        private Developer GetDevByID(int employeeNumber)
+        public Developer GetDevByID(int employeeNumber)
         {
             foreach (var developer in _listOfDevelopers)
             {
@@ -83,7 +83,7 @@ namespace KomodoRepository
         }
     }
 
-    class DevTeamRepo
+    public class DevTeamRepo
     {
         // Create a field to store all of the developer teams at the company
         private List<DevTeam> _listOfDeveloperTeams = new List<DevTeam>();
@@ -145,7 +145,7 @@ namespace KomodoRepository
         }
 
         // Helper method to find teams by team ID
-        private DevTeam GetTeamByID(int teamNumber)
+        public DevTeam GetTeamByID(int teamNumber)
         {
             foreach (var devTeam in _listOfDeveloperTeams)
             {
