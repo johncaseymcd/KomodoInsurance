@@ -485,6 +485,7 @@ namespace KomodoConsole
             if (parsed)
             {
                 devTeam = _devTeamRepo.GetTeamByID(teamID);
+                devsToEdit = devTeam.TeamMembers;
 
                 // Set new team name
                 Console.WriteLine("Enter the team name:");
@@ -512,7 +513,7 @@ namespace KomodoConsole
                                 developerAdd = _developerRepo.GetDevByID(employeeToAdd);
                                 if (developerAdd != null)
                                 {
-                                    devsToEdit.Add(developerAdd);
+                                    devsToEdit.Insert(devsToEdit.Count, developerAdd);
                                 }
                                 else
                                 {
@@ -521,7 +522,7 @@ namespace KomodoConsole
                                     if (addNew == "y")
                                     {
                                         developerAdd = CreateNewDeveloper();
-                                        devsToEdit.Add(developerAdd);
+                                        devsToEdit.Insert(devsToEdit.Count, developerAdd);
                                     }
                                     else if (addNew == "n")
                                     {
@@ -603,15 +604,72 @@ namespace KomodoConsole
         // Delete an existing Developer
         private void DeleteDeveloper()
         {
-            Console.WriteLine("Delete Dev");
-            Console.ReadLine();
+            Console.Clear();
+            ViewAllDevelopers();
+        EnterID:
+            Console.WriteLine("Enter the developer ID to be removed");
+            bool parsed = int.TryParse(Console.ReadLine(), out int devID);
+            if (parsed)
+            {
+                bool wasDeleted = _developerRepo.RemoveDeveloper(devID);
+                if (wasDeleted)
+                {
+                    Console.WriteLine("Developer successfully removed.");
+                    
+                    // Check if the developer was part of a team, and if so, remove them from that team as well
+                    foreach(var devTeam in _devTeamRepo.GetAllTeams())
+                    { 
+                        for (int x = devTeam.TeamMembers.Count - 1; x >= 0; x--)
+                        {
+                            var developer = devTeam.TeamMembers.ElementAt(x);
+                            if (developer.EmployeeIDNumber == devID)
+                            {
+                                devTeam.TeamMembers.RemoveAt(x);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("The developer could not be removed.");
+                    PressAnyKey();
+                    goto EnterID;
+                }
+            }
+            else
+            {
+                PressEnter();
+                goto EnterID;
+            }
         }
 
         // Delete an existing DevTeaam
         private void DeleteDevTeam()
         {
-            Console.WriteLine("Delete Team");
-            Console.ReadLine();
+            Console.Clear();
+            ViewAllTeams();
+        EnterID:
+            Console.WriteLine("Enter the team ID to be removed.");
+            bool parsed = int.TryParse(Console.ReadLine(), out int teamID);
+            if (parsed)
+            {
+                bool wasDeleted = _devTeamRepo.RemoveTeam(teamID);
+                if (wasDeleted)
+                {
+                    Console.WriteLine("The team was successfully removed.");
+                }
+                else
+                {
+                    Console.WriteLine("The team could not be removed.");
+                    PressAnyKey();
+                    goto EnterID;
+                }
+            }
+            else
+            {
+                PressEnter();
+                goto EnterID;
+            }
         }
 
         // Helper method to catch input errors
