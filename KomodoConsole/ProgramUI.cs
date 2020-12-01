@@ -346,20 +346,19 @@ namespace KomodoConsole
         private void ViewAllTeams()
         {
             Console.Clear();
-            List<DevTeam> teams = _devTeamRepo.GetAllTeams();
-            Console.WriteLine("Team members:");
-            foreach(var devTeam in teams)
-            {
-                for (int x = 1; x <= devTeam.TeamMembers.Count; x++)
-                {
-                    foreach(var developer in devTeam.TeamMembers)
-                    {
-                        Console.WriteLine($"Employee #{developer.EmployeeIDNumber}: {developer.LastName}, {developer.FirstName}");
-                    }
-                }
+            var teams = _devTeamRepo.GetAllTeams();
+            var teamMember = new Developer();
 
-                Console.WriteLine($"Team name: {devTeam.TeamName}\n" +
-                    $"Team #{devTeam.TeamIDNumber}");
+            foreach (var devTeam in teams)
+            {
+                Console.WriteLine($"Team ID: {devTeam.TeamIDNumber}\n" +
+                    $"Team name: {devTeam.TeamName}\n" +
+                    $"Team members: ");
+                foreach(var developer in devTeam.TeamMembers)
+                {
+                    Console.WriteLine($"Employee #{developer.EmployeeIDNumber}: {developer.LastName}, {developer.FirstName}");
+                }
+                Console.WriteLine("\n");
             }
         }
 
