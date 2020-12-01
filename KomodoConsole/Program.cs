@@ -11,7 +11,7 @@ namespace KomodoConsole
         static void Main(string[] args)
         {
             var program = new ProgramUI();
-            program.Run();
+            program.Run(); 
         }
     }
 }

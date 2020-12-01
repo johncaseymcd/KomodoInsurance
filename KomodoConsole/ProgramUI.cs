@@ -10,7 +10,7 @@ namespace KomodoConsole
     class ProgramUI
     {
         private DeveloperRepo _developerRepo = new DeveloperRepo();
-        private DevTeamRepo _devTeamRepo = new DevTeamRepo();
+        private DevTeamRepo _devTeamRepo = new DevTeamRepo(); 
 
         public void Run()
         {
@@ -249,6 +249,15 @@ namespace KomodoConsole
             bool parsedTeamID = int.TryParse(Console.ReadLine(), out int teamID);
             if (parsedTeamID)
             {
+                foreach(var team in _devTeamRepo.GetAllTeams())
+                {
+                    if (team.TeamIDNumber == teamID)
+                    {
+                        Console.WriteLine("Team ID number must be unique. Please try again.");
+                        PressAnyKey();
+                        goto EnterTeamID;
+                    }
+                }
                 devTeam.TeamIDNumber = teamID;
             }
             else
@@ -367,7 +376,6 @@ namespace KomodoConsole
         private void SearchForDeveloper()
         {
             var developer = new Developer();
-        EnterID:
             Console.WriteLine("Enter the employee's ID:");
             bool parsed = int.TryParse(Console.ReadLine(), out int employeeID);
             if (parsed)
@@ -384,14 +392,11 @@ namespace KomodoConsole
                 else
                 {
                     Console.WriteLine("No developers found with that ID.");
-                    PressAnyKey();
-                    goto EnterID;
                 }
             }
             else
             {
                 PressEnter();
-                goto EnterID;
             }
         }
 
@@ -400,7 +405,6 @@ namespace KomodoConsole
         {
             Console.Clear();
             var devTeam = new DevTeam();
-        EnterID:
             Console.WriteLine("Enter the team ID:");
             bool parsed = int.TryParse(Console.ReadLine(), out int teamID);
             if (parsed)
@@ -419,8 +423,6 @@ namespace KomodoConsole
                 else
                 {
                     Console.WriteLine("No teams found with that ID.");
-                    PressAnyKey();
-                    goto EnterID;
                 }
             }
         }
@@ -436,30 +438,38 @@ namespace KomodoConsole
             if (parsed)
             {
                 developer = _developerRepo.GetDevByID(employeeID);
-                // Set new first name
-                Console.WriteLine("Enter the employee's first name:");
-                developer.FirstName = Console.ReadLine();
 
-                // Set new last name
-                Console.WriteLine("Enter the employee's last name:");
-                developer.LastName = Console.ReadLine();
+                if (developer != null)
+                {
+                    // Set new first name
+                    Console.WriteLine("Enter the employee's first name:");
+                    developer.FirstName = Console.ReadLine();
+
+                    // Set new last name
+                    Console.WriteLine("Enter the employee's last name:");
+                    developer.LastName = Console.ReadLine();
 
                 // Set PluralSight access
-            TryAgain:
-                Console.WriteLine($"Does {developer.FirstName} {developer.LastName} have access to PluralSight (y/n)?");
-                string access = Console.ReadLine().ToLower();
-                if (access == "y")
-                {
-                    developer.HasPluralsightAccess = true;
-                }
-                else if (access == "n")
-                {
-                    developer.HasPluralsightAccess = false;
+                TryAgain:
+                    Console.WriteLine($"Does {developer.FirstName} {developer.LastName} have access to PluralSight (y/n)?");
+                    string access = Console.ReadLine().ToLower();
+                    if (access == "y")
+                    {
+                        developer.HasPluralsightAccess = true;
+                    }
+                    else if (access == "n")
+                    {
+                        developer.HasPluralsightAccess = false;
+                    }
+                    else
+                    {
+                        PressEnter();
+                        goto TryAgain;
+                    }
                 }
                 else
                 {
-                    PressEnter();
-                    goto TryAgain;
+                    Console.WriteLine("No developer found with that ID.");
                 }
             }
             else
@@ -687,7 +697,7 @@ namespace KomodoConsole
             Console.ReadKey();
         }
 
-        // Setup method to create existing developers at startup
+        // Setup method to create existing developers and teams at startup
         private void SeedDeveloperList()
         {
             var cm = new Developer("Casey", "McDonough", 12408, true);
@@ -701,6 +711,16 @@ namespace KomodoConsole
             _developerRepo.AddNewDeveloper(bw);
             _developerRepo.AddNewDeveloper(jg);
             _developerRepo.AddNewDeveloper(dc);
+
+            var drummers = new List<Developer>();
+            drummers.Add(js);
+            drummers.Add(bw);
+            drummers.Add(jg);
+            drummers.Add(dc);
+
+            var drummerTeam = new DevTeam(drummers, "Drummers", 4478);
+
+            _devTeamRepo.AddNewTeam(drummerTeam);
         }
     }
 }
