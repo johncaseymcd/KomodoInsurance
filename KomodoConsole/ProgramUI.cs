@@ -14,6 +14,7 @@ namespace KomodoConsole
 
         public void Run()
         {
+            SeedDeveloperList();
             Menu();
         }
 
@@ -476,7 +477,7 @@ namespace KomodoConsole
             var devTeam = new DevTeam();
             var developerAdd = new Developer();
             var developerRemove = new Developer();
-            var devsToAdd = new List<Developer>();
+            var devsToEdit = new List<Developer>();
 
         EnterID:
             Console.WriteLine("Enter the team ID to edit:");
@@ -489,7 +490,7 @@ namespace KomodoConsole
                 Console.WriteLine("Enter the team name:");
                 devTeam.TeamName = Console.ReadLine();
 
-            AddOrRemove:
+            AddOrRemoveDevs:
                 Console.WriteLine("Press A to add a team member or press R to remove a team member.");
                 string choice = Console.ReadLine().ToLower();
                 if (choice == "a")
@@ -511,7 +512,7 @@ namespace KomodoConsole
                                 developerAdd = _developerRepo.GetDevByID(employeeToAdd);
                                 if (developerAdd != null)
                                 {
-                                    devsToAdd.Add(developerAdd);
+                                    devsToEdit.Add(developerAdd);
                                 }
                                 else
                                 {
@@ -520,7 +521,7 @@ namespace KomodoConsole
                                     if (addNew == "y")
                                     {
                                         developerAdd = CreateNewDeveloper();
-                                        devsToAdd.Add(developerAdd);
+                                        devsToEdit.Add(developerAdd);
                                     }
                                     else if (addNew == "n")
                                     {
@@ -546,6 +547,7 @@ namespace KomodoConsole
                         PressEnter();
                         goto AddDevelopersByID;
                     }
+                    devTeam.TeamMembers = devsToEdit;
                 }
                 else if (choice == "r")
                 {
@@ -564,7 +566,7 @@ namespace KomodoConsole
                                 developerRemove = _developerRepo.GetDevByID(employeeToRemove);
                                 if (developerRemove != null)
                                 {
-                                    devsToAdd.Remove(developerRemove);
+                                    devsToEdit.Remove(developerRemove);
                                 }
                                 else
                                 {
@@ -583,11 +585,12 @@ namespace KomodoConsole
                         PressEnter();
                         goto RemoveDevsByID;
                     }
+                    devTeam.TeamMembers = devsToEdit;
                 }
                 else
                 {
                     PressEnter();
-                    goto AddOrRemove;
+                    goto AddOrRemoveDevs;
                 }
             }
             else
@@ -624,6 +627,22 @@ namespace KomodoConsole
         {
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey();
+        }
+
+        // Setup method to create existing developers at startup
+        private void SeedDeveloperList()
+        {
+            var cm = new Developer("Casey", "McDonough", 12408, true);
+            var js = new Developer("Jimmy", "Sullivan", 6661, true);
+            var bw = new Developer("Bill", "Ward", 13, false);
+            var jg = new Developer("Jean-Paul", "Gaster", 1141, false);
+            var dc = new Developer("Danny", "Carey", 112358, true);
+
+            _developerRepo.AddNewDeveloper(cm);
+            _developerRepo.AddNewDeveloper(js);
+            _developerRepo.AddNewDeveloper(bw);
+            _developerRepo.AddNewDeveloper(jg);
+            _developerRepo.AddNewDeveloper(dc);
         }
     }
 }
