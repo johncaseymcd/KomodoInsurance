@@ -10,7 +10,7 @@ namespace KomodoConsole
     class ProgramUI
     {
         private DeveloperRepo _developerRepo = new DeveloperRepo();
-        private DevTeamRepo _devTeamRepo = new DevTeamRepo(); 
+        private DevTeamRepo _devTeamRepo = new DevTeamRepo();
 
         public void Run()
         {
@@ -489,6 +489,8 @@ namespace KomodoConsole
             var developerRemove = new Developer();
             var devsToEdit = new List<Developer>();
 
+            ViewAllTeams();
+
         EnterID:
             Console.WriteLine("Enter the team ID to edit:");
             bool parsed = int.TryParse(Console.ReadLine(), out int teamID);
@@ -506,6 +508,7 @@ namespace KomodoConsole
                 string choice = Console.ReadLine().ToLower();
                 if (choice == "a")
                 {
+                    ViewAllDevelopers();
                 AddDevelopersByID:
                     // Team size
                     Console.WriteLine("How many developers would you like to add to this team?");
@@ -562,6 +565,14 @@ namespace KomodoConsole
                 }
                 else if (choice == "r")
                 {
+                    // Display all devs currently on the selected team
+                    Console.WriteLine("Current team members:");
+                    for (int x = 0; x < devTeam.TeamMembers.Count; x++)
+                    {
+                        Console.WriteLine($"Employee #{devTeam.TeamMembers.ElementAt(x).EmployeeIDNumber}: {devTeam.TeamMembers.ElementAt(x).LastName}, {devTeam.TeamMembers.ElementAt(x).FirstName}");
+                    }
+
+                    // Remove developer(s) from the team
                 RemoveDevsByID:
                     Console.WriteLine("How many developers would you like to remove from this team?");
                     bool parsedRemoveSize = int.TryParse(Console.ReadLine(), out int howManyRemoved);

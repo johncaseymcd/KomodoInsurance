@@ -22,7 +22,7 @@ namespace KomodoRepository
             FirstName = firstName;
             LastName = lastName;
             EmployeeIDNumber = employeeID;
-            HasPluralsightAccess = hasPS; 
+            HasPluralsightAccess = hasPS;
         }
     }
 
