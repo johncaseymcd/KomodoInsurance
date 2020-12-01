@@ -258,7 +258,7 @@ namespace KomodoConsole
 
         AddDevelopersByID:
             // Team size
-            Console.WriteLine("How many developers are on this team?");
+            Console.WriteLine("How many developers would you like to add to this team?");
             bool parsedSize = int.TryParse(Console.ReadLine(), out int howManyDevs);
 
             // Add devs to team
@@ -353,7 +353,7 @@ namespace KomodoConsole
             {
                 Console.WriteLine($"Team ID: {devTeam.TeamIDNumber}\n" +
                     $"Team name: {devTeam.TeamName}\n" +
-                    $"Team members: ");
+                    $"Team members:");
                 foreach(var developer in devTeam.TeamMembers)
                 {
                     Console.WriteLine($"Employee #{developer.EmployeeIDNumber}: {developer.LastName}, {developer.FirstName}");
@@ -397,22 +397,204 @@ namespace KomodoConsole
         // Search for a DevTeam
         private void SearchForDevTeam()
         {
-            Console.WriteLine("Search Team");
-            Console.ReadLine();
+            Console.Clear();
+            var devTeam = new DevTeam();
+        EnterID:
+            Console.WriteLine("Enter the team ID:");
+            bool parsed = int.TryParse(Console.ReadLine(), out int teamID);
+            if (parsed)
+            {
+                devTeam = _devTeamRepo.GetTeamByID(teamID);
+                if (devTeam != null)
+                {
+                    Console.WriteLine($"Team ID: {devTeam.TeamIDNumber}\n" +
+                        $"Team name: {devTeam.TeamName}\n" +
+                        $"Team members:");
+                    foreach(var developer in devTeam.TeamMembers)
+                    {
+                        Console.WriteLine($"Employee #{developer.EmployeeIDNumber}: {developer.LastName}, {developer.FirstName}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No teams found with that ID.");
+                    PressAnyKey();
+                    goto EnterID;
+                }
+            }
         }
 
         // Edit an existing Developer
         private void EditDeveloper()
         {
-            Console.WriteLine("Edit Dev");
-            Console.ReadLine();
+            var developer = new Developer();
+            Console.Clear();
+        EnterID:
+            Console.WriteLine("Enter the employee ID to edit:");
+            bool parsed = int.TryParse(Console.ReadLine(), out int employeeID);
+            if (parsed)
+            {
+                developer = _developerRepo.GetDevByID(employeeID);
+                // Set new first name
+                Console.WriteLine("Enter the employee's first name:");
+                developer.FirstName = Console.ReadLine();
+
+                // Set new last name
+                Console.WriteLine("Enter the employee's last name:");
+                developer.LastName = Console.ReadLine();
+
+                // Set PluralSight access
+            TryAgain:
+                Console.WriteLine($"Does {developer.FirstName} {developer.LastName} have access to PluralSight (y/n)?");
+                string access = Console.ReadLine().ToLower();
+                if (access == "y")
+                {
+                    developer.HasPluralsightAccess = true;
+                }
+                else if (access == "n")
+                {
+                    developer.HasPluralsightAccess = false;
+                }
+                else
+                {
+                    PressEnter();
+                    goto TryAgain;
+                }
+            }
+            else
+            {
+                PressEnter();
+                goto EnterID;
+            }
         }
 
         // Edit an existing DevTeam
         private void EditDevTeam()
         {
-            Console.WriteLine("Edit Team");
-            Console.ReadLine();
+            Console.Clear();
+
+            var devTeam = new DevTeam();
+            var developerAdd = new Developer();
+            var developerRemove = new Developer();
+            var devsToAdd = new List<Developer>();
+
+        EnterID:
+            Console.WriteLine("Enter the team ID to edit:");
+            bool parsed = int.TryParse(Console.ReadLine(), out int teamID);
+            if (parsed)
+            {
+                devTeam = _devTeamRepo.GetTeamByID(teamID);
+
+                // Set new team name
+                Console.WriteLine("Enter the team name:");
+                devTeam.TeamName = Console.ReadLine();
+
+            AddOrRemove:
+                Console.WriteLine("Press A to add a team member or press R to remove a team member.");
+                string choice = Console.ReadLine().ToLower();
+                if (choice == "a")
+                {
+                AddDevelopersByID:
+                    // Team size
+                    Console.WriteLine("How many developers would you like to add to this team?");
+                    bool parsedAddSize = int.TryParse(Console.ReadLine(), out int howManyAdded);
+
+                    // Add devs to team
+                    if (parsedAddSize)
+                    {
+                        for (int x = 1; x <= howManyAdded; x++)
+                        {
+                            Console.WriteLine("Enter the employee ID to add to the team:");
+                            bool parsedEmployeeAdd = int.TryParse(Console.ReadLine(), out int employeeToAdd);
+                            if (parsedEmployeeAdd)
+                            {
+                                developerAdd = _developerRepo.GetDevByID(employeeToAdd);
+                                if (developerAdd != null)
+                                {
+                                    devsToAdd.Add(developerAdd);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Employee ID not found. Would you like to add a new employee to this team (y/n)?");
+                                    string addNew = Console.ReadLine().ToLower();
+                                    if (addNew == "y")
+                                    {
+                                        developerAdd = CreateNewDeveloper();
+                                        devsToAdd.Add(developerAdd);
+                                    }
+                                    else if (addNew == "n")
+                                    {
+                                        PressAnyKey();
+                                        goto AddDevelopersByID;
+                                    }
+                                    else
+                                    {
+                                        PressEnter();
+                                        goto AddDevelopersByID;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                PressEnter();
+                                goto AddDevelopersByID;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        PressEnter();
+                        goto AddDevelopersByID;
+                    }
+                }
+                else if (choice == "r")
+                {
+                RemoveDevsByID:
+                    Console.WriteLine("How many developers would you like to remove from this team?");
+                    bool parsedRemoveSize = int.TryParse(Console.ReadLine(), out int howManyRemoved);
+                    if (parsedRemoveSize)
+                    {
+                        for (int y = 1; y <= howManyRemoved; y++)
+                        {
+                        TryAgain:
+                            Console.WriteLine("Enter the employee ID to remove from the team:");
+                            bool parsedEmployeeRemove = int.TryParse(Console.ReadLine(), out int employeeToRemove);
+                            if (parsedEmployeeRemove)
+                            {
+                                developerRemove = _developerRepo.GetDevByID(employeeToRemove);
+                                if (developerRemove != null)
+                                {
+                                    devsToAdd.Remove(developerRemove);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Developer ID not found. No removal necessary.");
+                                }
+                            }
+                            else
+                            {
+                                PressEnter();
+                                goto TryAgain;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        PressEnter();
+                        goto RemoveDevsByID;
+                    }
+                }
+                else
+                {
+                    PressEnter();
+                    goto AddOrRemove;
+                }
+            }
+            else
+            {
+                PressEnter();
+                goto EnterID;
+            }
         }
 
         // Delete an existing Developer
